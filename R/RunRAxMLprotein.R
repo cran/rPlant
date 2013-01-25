@@ -5,7 +5,7 @@ RunRAxMLprotein <- function(user.name, token, DE.file.name="", DE.file.path="",
     job.name <- paste(user.name, "_RAxMLprotein_", model, "viaAPI", sep="")
 
   #initialize arguments
-  args <- paste("&arguments=-m", model)
+  args <- paste("arguments=-m", model)
   if (!is.null(bootstrap)) 
     args <- append(args, c("-b", bootstrap))
   args <- append(args, c("-c", numcat))

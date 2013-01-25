@@ -5,7 +5,7 @@
 	This function will submit a MUSCLE job to iPlant's DE
 }
 \usage{
-RunMuscle(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="muscle-ranger-2.0")
+RunMuscle(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="muscle-ranger-2.0u2")
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}

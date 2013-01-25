@@ -54,7 +54,7 @@ GetPhylotasticToken <- function(names, max.per.call=100, verbose=TRUE) {
   names <- sapply(names, sub, pattern=" ", replacement="+", USE.NAMES=FALSE)
   names <- sapply(names, URLencode, USE.NAMES = FALSE)
   names <- sapply(names, sub, pattern="=", replacement="", USE.NAMES=FALSE)
-  call.base <- 'curl -X POST -sk http://www.taxosaurus.org/submit?query='
+  call.base <- "http://www.taxosaurus.org/submit?query="
   new.names <- rep(NA, length(names))
   names.in.call <- 0
   starting.position <- 1
@@ -63,8 +63,7 @@ GetPhylotasticToken <- function(names, max.per.call=100, verbose=TRUE) {
     names.in.call <- names.in.call + 1
     name.call <- paste(name.call, names[name.index], collapse="", sep="%0A")
       if (names.in.call == max.per.call || name.index == length(names)) {
-        print(name.call)
-        res <- suppressWarnings(fromJSON(paste(system(name.call,intern=TRUE),sep="", collapse="")))
+        res <- suppressWarnings(fromJSON(postForm(name.call)))
     }
   }
     print(res$message)
@@ -72,8 +71,9 @@ GetPhylotasticToken <- function(names, max.per.call=100, verbose=TRUE) {
 }
 
 RetrieveTNRSNames <- function(names, token, source=c("iPlant_TNRS", "NCBI"), match.threshold=0.5, verbose=F) {
-  call <- paste("curl -X GET -sk http://www.taxosaurus.org/retrieve/", token, sep="", collapse="")
-  res <- suppressWarnings(fromJSON(paste(system(command=call, intern=T), sep="", collapse="")))
+  web <- "http://www.taxosaurus.org/retrieve"
+  res <- suppressWarnings(fromJSON(getURL(paste(web,token, sep="/"))))
+
   TNRSnames <- matrix(nrow=length(names), ncol=2)  #make results a subsettable matrix
   rownames(TNRSnames) <- names 
   colnames(TNRSnames) <- c("TNRS name", "match score") 
@@ -90,7 +90,6 @@ RetrieveTNRSNames <- function(names, token, source=c("iPlant_TNRS", "NCBI"), mat
     return (TNRSnames)
   return(as.vector(TNRSnames[,1]))
 }
-
 
 CompareNames <- function(old.names, new.names, verbose=TRUE) {
 # takes a list of old.names taxonomic names(same ones given as "names in ResolveNames) and compares to the returned names from TNRS

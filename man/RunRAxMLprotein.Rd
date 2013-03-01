@@ -5,7 +5,9 @@
 	This function will submit a RAxML job to iPlant's DE
 }
 \usage{
-RunRAxMLprotein(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, model="PROTCAT", bootstrap=NULL, numcat=25, nprocs=1)
+RunRAxMLprotein(user.name, token, DE.file.name="", DE.file.path="", 
+                            job.name=NULL, model="PROTCAT", bootstrap=NULL, 
+                            numcat=25, nprocs=2)
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}

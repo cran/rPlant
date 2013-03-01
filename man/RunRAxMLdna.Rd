@@ -5,7 +5,11 @@
 	This function will submit a RAxML job to iPlant's DE
 }
 \usage{
-RunRAxMLdna(user.name, token, DE.file.name="", DE.file.path="", outputFileName=NULL, model="GTRCAT", bootstrap=NULL, algorithm="d", multipleModelFileName=NULL, numcat=25, nprocs=1)
+RunRAxMLdna(user.name, token, DE.file.name="", 
+                        DE.file.path="", outputFileName=NULL, model="GTRCAT", 
+                        bootstrap=NULL, algorithm="d",
+                        multipleModelFileName=NULL, 
+                        numcat=25, nprocs=2)
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}

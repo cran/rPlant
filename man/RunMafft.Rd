@@ -5,7 +5,7 @@
 	This function will submit a Mafft job to iPlant's DE
 }
 \usage{
-RunMafft(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="mafft-lonestar-6.864")
+RunMafft(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="mafft-lonestar-6.864u1")
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}

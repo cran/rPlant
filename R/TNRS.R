@@ -4,7 +4,8 @@
 ResolveNames <- function(names, max.per.call=100, verbose=TRUE) {
   max.per.call <- 100
   verbose <- FALSE
-  # takes a list of names and sends it to the iPlant TNRS site(http://tnrs.iplantcollaborative.org/)
+  # takes a list of names and sends it to the iPlant TNRS site
+  # http://tnrs.iplantcollaborative.org/
   # names <- c("zea mays","acacia","solanum","saltea","rosa_rugoso")
   # returnedNames <- ResolveNames(names)
   # print(returnedNames)
@@ -23,7 +24,8 @@ ResolveNames <- function(names, max.per.call=100, verbose=TRUE) {
     if (names.in.call == max.per.call || name.index == length(names)) {
       returned.values <- suppressWarnings(fromJSON(file=actual.call)$items)
       for (return.index in sequence(length(returned.values)))
-        new.names[starting.position + return.index - 1] <- returned.values[[return.index]]$nameScientific
+        new.names[starting.position + return.index - 
+                  1] <- returned.values[[return.index]]$nameScientific
       if (verbose) 
         print(paste("finished ", name.index, "of ", length(names), "names")) 
       starting.position <- name.index + 1
@@ -41,13 +43,16 @@ ResolveNames <- function(names, max.per.call=100, verbose=TRUE) {
 GetPhylotasticToken <- function(names, max.per.call=100, verbose=TRUE) {
   max.per.call <- 100
   verbose <- FALSE
-  # takes a list of names and sends it to the phylotastic TNRS site(http://api.phylotastic.org/tnrs)
+  # takes a list of names and sends it to the phylotastic TNRS site
+  # http://api.phylotastic.org/tnrs
   # names <- c("zea mays","acacia","solanum","saltea","rosa_rugoso")
   # returns a token that will check names later
   for(i in sequence(length(names))) {
   	if (length(which(strsplit(names[i], split="")[[1]] == " ")) > 1){
-  		WhereToCut<-which(strsplit(names[i], split="")[[1]] == " ")[2]-1 #second space in a name is where to cut name sequence
-  		names[i]<-paste(paste(strsplit(names[i], split="")[[1]][1:WhereToCut], collapse=""))
+  	  #second space in a name is where to cut name sequence
+      WhereToCut <- which(strsplit(names[i], split="")[[1]] == " ")[2]-1   
+      names[i] <- paste(paste(strsplit(names[i], split="")[[1]][1:WhereToCut], 
+                      collapse=""))
   	}
   }
   names <- sapply(names, sub, pattern="_", replacement="+", USE.NAMES=FALSE)
@@ -58,7 +63,7 @@ GetPhylotasticToken <- function(names, max.per.call=100, verbose=TRUE) {
   new.names <- rep(NA, length(names))
   names.in.call <- 0
   starting.position <- 1
-  name.call<-paste(call.base, names[1], sep="")
+  name.call <- paste(call.base, names[1], sep="")
   for (name.index in 2:length(names)) {
     names.in.call <- names.in.call + 1
     name.call <- paste(name.call, names[name.index], collapse="", sep="%0A")
@@ -70,37 +75,46 @@ GetPhylotasticToken <- function(names, max.per.call=100, verbose=TRUE) {
     return(res$token)
 }
 
-RetrieveTNRSNames <- function(names, token, source=c("iPlant_TNRS", "NCBI"), match.threshold=0.5, verbose=F) {
+RetrieveTNRSNames <- function(names, token, source=c("iPlant_TNRS", "NCBI"), 
+                              match.threshold=0.5, verbose=F) {
   web <- "http://www.taxosaurus.org/retrieve"
-  res <- suppressWarnings(fromJSON(getURL(paste(web,token, sep="/"))))
+  res <- suppressWarnings(fromJSON(getURL(paste(web, token, sep="/"))))
 
-  TNRSnames <- matrix(nrow=length(names), ncol=2)  #make results a subsettable matrix
+  #make results a subsettable matrix
+  TNRSnames <- matrix(nrow=length(names), ncol=2)  
   rownames(TNRSnames) <- names 
   colnames(TNRSnames) <- c("TNRS name", "match score") 
   for (i in sequence(length(res$names))) {
     for (j in sequence(length(res$names[[i]]$matches))) {
-      if (res$names[[i]]$matches[[j]]$sourceId == source && as.numeric(res$names[[i]]$matches[[j]]$score) > match.threshold) {  
-        TNRSnames[which(rownames(TNRSnames) == res$names[[i]]$submittedName),1] <- res$names[[i]]$matches[[j]]$matchedName
-        TNRSnames[which(rownames(TNRSnames) == res$names[[i]]$submittedName),2] <- res$names[[i]]$matches[[j]]$score
+      if (res$names[[i]]$matches[[j]]$sourceId == source && 
+          as.numeric(res$names[[i]]$matches[[j]]$score) > match.threshold) {  
+        TNRSnames[which(rownames(TNRSnames) == res$names[[i]]$submittedName),
+                  1] <- res$names[[i]]$matches[[j]]$matchedName
+        TNRSnames[which(rownames(TNRSnames) == res$names[[i]]$submittedName),
+                  2] <- res$names[[i]]$matches[[j]]$score
       }
     }
   }
-  TNRSnames[which(is.na(TNRSnames[,1])),1]<-rownames(TNRSnames)[which(is.na(TNRSnames[,1]))] #if no TNRS name is returned, then return submitted name
+  #if no TNRS name is returned, then return submitted name
+  TNRSnames[which(is.na(TNRSnames[,1])),1] <- rownames(TNRSnames)[which(
+            is.na(TNRSnames[,1]))] 
   if (verbose)
-    return (TNRSnames)
+    return(TNRSnames)
   return(as.vector(TNRSnames[,1]))
 }
 
 CompareNames <- function(old.names, new.names, verbose=TRUE) {
-# takes a list of old.names taxonomic names(same ones given as "names in ResolveNames) and compares to the returned names from TNRS
-# note that names are changed back to include an "_" instead of the " " they come with out of TNRS first, so that they do not count as taxonomic name changes
+# takes a list of old.names taxonomic names(same ones given as "names in 
+# ResolveNames) and compares to the returned names from TNRS
+# note that names are changed back to include an "_" instead of the " " they
+# come with out of TNRS first, so that they do not count as taxonomic name changes
   taxa.changed <- 0
   comp <- cbind(old.names, new.names)
   for (i in 1: dim(comp)[1]){
-    if (comp[i, 1] != comp[i, 2]) {
+    if (comp[i,1] != comp[i,2]) {
       taxa.changed <- taxa.changed + 1
       if (verbose)
-        print(paste(comp[i, 1], " was changed to ", comp[i, 2], cat("\n")))
+        print(paste(comp[i,1], " was changed to ", comp[i,2], cat("\n")))
     }
   }
   print(paste(taxa.changed, "taxa changed names according to TNRS"))

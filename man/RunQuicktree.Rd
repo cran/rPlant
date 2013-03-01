@@ -5,7 +5,7 @@
 	This function will submit a Quicktree job to iPlant's DE
 }
 \usage{
-RunQuicktree(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="quicktree-tree-lonestar-1.1")
+RunQuicktree(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="quicktree-tree-lonestar-1.1u1")
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}

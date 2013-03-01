@@ -1,5 +1,6 @@
 # Copyright (c) 2012, University of Tennessee
-# rPlant directly interacts with iplant's command-line API for the Discovery Environment (DE)
+# rPlant directly interacts with iplant's command-line API for the 
+# Discovery Environment (DE)
 
 # -- AUTHENTICATION FUNCTIONS -- #
 GetToken <- function(user.name, user.pwd, 
@@ -27,8 +28,10 @@ RenewToken <- function(user.name, user.pwd, token,
     if (api == "iplant") {
       curl.call <- getCurlHandle(userpwd=paste(user.name, user.pwd, sep=":"),  
                                  httpauth=1L, ssl.verifypeer=FALSE)
-      res <- suppressWarnings(fromJSON(postForm(web, curl=curl.call, token=token)))
-      res$status  # Outputs a message renewal success
+      res <- suppressWarnings(fromJSON(postForm(web, curl=curl.call, 
+                              token=token)))
+      # Outputs a message renewal success
+      res$status  
     }
     else 
       warning("Not yet implemented")
@@ -38,13 +41,15 @@ RenewToken <- function(user.name, user.pwd, token,
 
 
 # -- FILE AND DATA FUNCTIONS -- #
-UploadFile <- function(user.name, token, local.file.name, local.file.path="", file.type) {
+UploadFile <- function(user.name, token, local.file.name, local.file.path="", 
+                       file.type) {
   web <- paste("https://foundation.iplantc.org/io-v1/io/", user.name, sep="");
   if (local.file.path == "") {
     res <- suppressWarnings(fromJSON(postForm(web, style="httppost",
                             fileToUpload=fileUpload(local.file.name), 
-                            fileType=file.type, .opts=list(userpwd=paste(user.name, 
-                            token, sep=":"), ssl.verifypeer=FALSE, httpauth=AUTH_BASIC,
+                            fileType=file.type, 
+                            .opts=list(userpwd=paste(user.name, token, 
+                            sep=":"), ssl.verifypeer=FALSE, httpauth=AUTH_BASIC,
                             useragent="R", followlocation=TRUE))))
   }
   else {
@@ -61,7 +66,8 @@ UploadFile <- function(user.name, token, local.file.name, local.file.path="", fi
     return(res$status)
 }
 
-RenameFile <- function(user.name, token, old.DE.file.name, new.DE.file.name, DE.file.path="") {
+RenameFile <- function(user.name, token, old.DE.file.name, new.DE.file.name, 
+                       DE.file.path="") {
   web <- "https://foundation.iplantc.org/io-v1/io"
   curl.call <- getCurlHandle(userpwd=paste(user.name, token, sep=":"), 
                              httpauth=1L, ssl.verifypeer=FALSE)
@@ -70,20 +76,23 @@ RenameFile <- function(user.name, token, old.DE.file.name, new.DE.file.name, DE.
   content[2] <- paste("newName=", new.DE.file.name, sep="")
   val <- charToRaw(paste(content, collapse = "&"))
   res <- suppressWarnings(fromJSON(httpPUT(paste(web, user.name, DE.file.path, 
-                          old.DE.file.name, sep="/"), content=val, curl=curl.call)))
+                          old.DE.file.name, sep="/"), content=val, 
+                          curl=curl.call)))
   if (res$status == "error")
     return(paste(res$status, ":", res$message))
   else
     return(res$status)
 }
 
-MoveFile <- function(user.name, token, DE.file.name, DE.file.path="", DE.end.path="") {
+MoveFile <- function(user.name, token, DE.file.name, DE.file.path="", 
+                     DE.end.path="") {
   web <- "https://foundation.iplantc.org/io-v1/io"
   curl.call <- getCurlHandle(userpwd=paste(user.name, token, sep=":"), 
                              httpauth=1L, ssl.verifypeer=FALSE)
   content <- c()
   content[1] <- "action=move"
-  content[2] <- paste("newPath=", user.name, "/", DE.end.path, "/", DE.file.name, sep="")
+  content[2] <- paste("newPath=", user.name, "/", DE.end.path, "/", 
+                      DE.file.name, sep="")
   val <- charToRaw(paste(content, collapse = "&"))
 
   res <- suppressWarnings(fromJSON(httpPUT(paste(web, user.name, DE.file.path, 
@@ -103,7 +112,8 @@ DeleteFile <- function(user.name, token, DE.file.name, DE.file.path="") {
                             DE.file.name, sep="/"), curl = curl.call)))
   else
     res <- suppressWarnings(fromJSON(httpDELETE(paste(web, user.name, 
-                            DE.file.path, DE.file.name, sep="/"), curl = curl.call)))
+                            DE.file.path, DE.file.name, sep="/"), 
+                            curl=curl.call)))
   if (res$status == "error")
     return(paste(res$status, ":", res$message))
   else
@@ -114,7 +124,8 @@ SupportFile <- function(user.name, token) {
   web <- "https://foundation.iplantc.org/io-v1/data/transforms/"
   curl.call <- getCurlHandle(userpwd=paste(user.name, token, sep=":"), 
                              httpauth=1L, ssl.verifypeer=FALSE)
-  res <- suppressWarnings(fromJSON(getForm(paste(web, sep="/"), curl=curl.call)))
+  res <- suppressWarnings(fromJSON(getForm(paste(web, sep="/"), 
+  curl=curl.call)))
   if(res[[1]] == "success") {
     file.types <- c()
     for(i in 1:length(res[[3]])) {
@@ -144,13 +155,14 @@ ListDir <- function(user.name, token, DE.dir.path="") {
 MakeDir <- function(user.name, token, DE.dir.name, DE.dir.path="") {
   web <- "https://foundation.iplantc.org/io-v1/io"
   curl.call <- getCurlHandle(userpwd=paste(user.name, token, sep=":"), 
-                            httpauth=1L, ssl.verifypeer=FALSE)
+                             httpauth=1L, ssl.verifypeer=FALSE)
   content <- c()
   content[1] <- "action=mkdir"
   content[2] <- paste("dirName=", DE.dir.name, sep="")
   val <- charToRaw(paste(content, collapse = "&"))
-  res <- suppressWarnings(fromJSON(httpPUT(paste(web, user.name, DE.dir.path, sep="/"), 
-                          content=val, curl=curl.call)))
+  res <- suppressWarnings(fromJSON(httpPUT(paste(web, user.name, 
+                          DE.dir.path, sep="/"), content=val, 
+                          curl=curl.call)))
  if (res$status == "error")
     return(paste(res$status, ":", res$message))
   else
@@ -166,7 +178,8 @@ DeleteDir <- function(user.name, token, DE.dir.name, DE.dir.path="") {
                             DE.dir.name, sep="/"), curl=curl.call)))
   else
     res <- suppressWarnings(fromJSON(httpDELETE(paste(web,user.name, 
-                            DE.dir.path, DE.dir.name, sep="/"), curl=curl.call)))
+                            DE.dir.path, DE.dir.name, sep="/"), 
+                            curl=curl.call)))
   if (res$status == "error")
     return(paste(res$status, ":", res$message))
   else
@@ -197,23 +210,28 @@ GetAppInfo <- function(user.name, token, application, verbose=FALSE) {
         # c) outputs
   web <- "https://foundation.iplantc.org/apps-v1/apps/name"
   curl.call <- getCurlHandle(userpwd=paste(user.name, token, sep=":"), 
-                             httpauth=1L, 
-                             ssl.verifypeer=FALSE)
-  res <- suppressWarnings(fromJSON(getForm(paste(web, application, sep="/"), curl=curl.call)))
-  if (length(res$result[[1]]$inputs)==0){return(list(application=res$result[[1]]$id, NA))}else{
-  if (verbose)
-    return(res)
-  else
-    app.info<-c()
-    for (input in sequence(length(res$result[[1]]$inputs)))
-      app.info <- rbind(app.info, c("input", res$result[[1]]$inputs[[input]]$id,
-                        res$result[[1]]$inputs[[input]]$semantics$fileTypes[1]))
-    for (output in sequence(length(res$result[[1]]$output)))
-      app.info <- rbind(app.info, c("output", res$result[[1]]$output[[output]]$id,
-                        res$result[[1]]$output[[output]]$semantics$fileTypes[1])) 
-                        # this seems to vary depending on the application
-    colnames(app.info)<-c("kind", "id", "fileType")
-    return(list(application=res$result[[1]]$id, app.info))
+                             httpauth=1L, ssl.verifypeer=FALSE)
+  res <- suppressWarnings(fromJSON(getForm(paste(web, application, sep="/"), 
+                          curl=curl.call)))
+  if (length(res$result[[1]]$inputs)==0) {
+    return(list(application=res$result[[1]]$id, NA))
+  } 
+  else {
+    if (verbose) 
+      return(res)
+    else {
+      app.info<-c()
+      for (input in sequence(length(res$result[[1]]$inputs))) {
+        app.info <- rbind(app.info, c("input", res$result[[1]]$inputs[[input]]$id,
+                          res$result[[1]]$inputs[[input]]$semantics$fileTypes[1]))
+      }
+      for (output in sequence(length(res$result[[1]]$output))) {
+        app.info <- rbind(app.info, c("output", res$result[[1]]$output[[output]]$id,
+                          res$result[[1]]$output[[output]]$semantics$fileTypes[1])) 
+      }
+      colnames(app.info)<-c("kind", "id", "fileType")
+      return(list(application=res$result[[1]]$id, app.info))
+    }
   }
 }
 # -- END -- #
@@ -230,32 +248,42 @@ SubmitJob <- function(user.name, token, application, DE.file.name,
                              httpauth=1L, ssl.verifypeer=FALSE)
   MakeDir(user.name, token, "analyses", DE.dir.path="")
   web <- "https://foundation.iplantc.org/apps-v1/job"
-  if (is.null(args)){  #clean up so you don't have to repeat code
+  #clean up so you don't have to repeat code
+  if (is.null(args)){  
     content <- c()
     content[1] <- paste("jobName=", job.name, sep="")
     content[2] <- paste("softwareName=", application, sep="")
     content[3] <- "archive=1"
-    if (DE.file.path=="")
+    if (DE.file.path=="") {
       content[4] <- paste("inputSeqs=", "/", user.name, "/", DE.file.name, sep="")
-    else
-      content[4] <- paste("inputSeqs=", "/", user.name, "/", DE.file.path, "/", DE.file.name, sep="")
+    } 
+    else {
+      content[4] <- paste("inputSeqs=", "/", user.name, "/", DE.file.path, "/", 
+                          DE.file.name, sep="")
+    }
     content[5] <- paste("processorCount=", nprocs, sep="")
-    content[6] <- paste("archivePath=/", user.name, "/analyses/", job.name, sep="")
+    content[6] <- paste("archivePath=/", user.name, "/analyses/", job.name, 
+                        sep="")
     content[7] <- "requestedTime=24:00:00"
     content[8] <- "outputFormat=fasta"
     content[9] <- "mode=auto"
   }
-  else{
+  else {
     content <- c()
     content[1] <- paste("jobName=", job.name, sep="")
     content[2] <- paste("softwareName=", application, sep="")
     content[3] <- "archive=1"
-    if (DE.file.path=="")
-      content[4] <- paste("inputSeqs=", "/", user.name, "/", DE.file.name, sep="")
-    else
-      content[4] <- paste("inputSeqs=", "/", user.name, "/", DE.file.path, "/", DE.file.name, sep="")
+    if (DE.file.path=="") {
+      content[4] <- paste("inputSeqs=", "/", user.name, "/", DE.file.name, 
+                          sep="")
+    } 
+    else {
+      content[4] <- paste("inputSeqs=", "/", user.name, "/", DE.file.path, "/", 
+                          DE.file.name, sep="")
+    }
     content[5] <- paste("processorCount=", nprocs, sep="")
-    content[6] <- paste("archivePath=/", user.name, "/analyses/", job.name, sep="")
+    content[6] <- paste("archivePath=/", user.name, "/analyses/", job.name, 
+                  sep="")
     content[7] <- "requestedTime=24:00:00"
     content[8] <- "outputFormat=fasta"
     content[9] <- "mode=auto"
@@ -278,7 +306,8 @@ CheckJobStatus <- function(user.name, token, job.id, verbose=FALSE) {
   web <- "https://foundation.iplantc.org/apps-v1/job"
   curl.call <- getCurlHandle(userpwd=paste(user.name, token, sep=":"), 
                              httpauth=1L, ssl.verifypeer=FALSE)
-  res <- suppressWarnings(fromJSON(getForm(paste(web, job.id, sep="/"), curl=curl.call)))
+  res <- suppressWarnings(fromJSON(getForm(paste(web, job.id, sep="/"), 
+                          curl=curl.call)))
   if (res$status == "error") {
     print(paste("Error in job.id ", job.id, ":", res$message))
     if (verbose) 
@@ -311,11 +340,14 @@ RetrieveJob <- function(user.name, token, job.id, files, zip=TRUE) {
   web <- "https://foundation.iplantc.org/io-v1/io"
   curl.call <- getCurlHandle(userpwd=paste(user.name, token, sep=":"), 
                              httpauth=1L, ssl.verifypeer=FALSE)
-  invisible(capture.output(fileList <- ListJobOutput(user.name, token, job.id)[[1]]))  # only will work on one job.id now
+  # only will work on one job.id now
+  invisible(capture.output(fileList <- ListJobOutput(user.name, token, 
+            job.id)[[1]]))  
   JS <- CheckJobStatus(user.name, token, job.id, verbose=T)
   if (JS$res$status == "ARCHIVING_FINISHED") {
     for (file in 1:length(files)) {
-      if (files[file] %in% fileList) {  # if file exists in output then download
+      # if file exists in output then download
+      if (files[file] %in% fileList) {  
         out <- suppressWarnings(getForm(paste(web, JS$result$archivePath, "/", 
                                 files[file], sep=""), curl=curl.call))
         if (is.raw(out))
@@ -336,7 +368,8 @@ RetrieveJob <- function(user.name, token, job.id, files, zip=TRUE) {
       }
     }
     if (zip) {
-      zip(paste("job_",job.id,".zip",sep=""), files=paste(getwd(), files, sep="/"))
+      zip(paste("job_",job.id,".zip",sep=""), files=paste(getwd(), files, 
+          sep="/"))
       for (i in c(1:length(files))) {
         file.remove(files[i])
       }

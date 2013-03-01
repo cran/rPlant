@@ -5,7 +5,7 @@
 	This function will submit a ClustalW job to iPlant's DE
 }
 \usage{
-	RunClustal(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="ClustalW2-2.1")
+	RunClustal(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="ClustalW2-2.1u1")
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}

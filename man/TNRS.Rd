@@ -11,7 +11,8 @@
 \usage{
 ResolveNames(names, max.per.call=100, verbose=TRUE) 
 GetPhylotasticToken(names, max.per.call=100, verbose=TRUE) 
-RetrieveTNRSNames(names, token, source=c("iPlant_TNRS", "NCBI"), match.threshold=0.5, verbose=F)
+RetrieveTNRSNames(names, token, source=c("iPlant_TNRS", "NCBI"),
+                  match.threshold=0.5, verbose=F)
 CompareNames(old.names, new.names, verbose=TRUE)
 }
 \arguments{

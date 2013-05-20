@@ -7,7 +7,8 @@
 \usage{
 RunRAxMLprotein(user.name, token, DE.file.name="", DE.file.path="", 
                             job.name=NULL, model="PROTCAT", bootstrap=NULL, 
-                            numcat=25, nprocs=2)
+                            numcat=25, nprocs=2,
+                            version="raxml-lonestar-7.2.8u1")
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}
@@ -18,7 +19,8 @@ RunRAxMLprotein(user.name, token, DE.file.name="", DE.file.path="",
 	\item{model}{Substitution model.  Choices are \code{PROTCAT}, \code{PROTGAMMA}, \code{PROTCAT.GAMMA}, \code{PROTGAMMAI}, \code{PROTCAT.GAMMAI}}
 	\item{bootstrap}{Random Seed Number for non-parametric bootstrapping}
 	\item{numcat}{Number of distinct rate categories}
-	\item{nprocs}{the number of processors to be allocated to the job, default = 1}
+	\item{nprocs}{the number of processors to be allocated to the job, default = 2}
+	\item{version}{RAxML version, options include \code{raxml-lonestar-7.2.8u1}}
 }
 \details{
 	The function is a wrapper function for several other rPlant functions, but specific to MUSCLE runs.  
@@ -30,6 +32,6 @@ RunRAxMLprotein(user.name, token, DE.file.name="", DE.file.path="",
 	Text listing action as either being a "success" or "error". If an error, then a message stating the error should also be reported.  
 }
 \examples{
-	# RunRAxMLprotein(user.name, token, DE.file.name="your.protein.alignment", DE.file.path="",  model="PROTCAT.GAMMA", bootstrap=NULL, numcat=25, nprocs=1)
-
+	# RunRAxMLprotein(user.name, token, DE.file.name="your.protein.alignment",
+	#                 model="PROTCAT.GAMMA", numcat=25)
 }	

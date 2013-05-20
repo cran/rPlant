@@ -5,7 +5,8 @@
 	This function will submit a Quicktree job to iPlant's DE
 }
 \usage{
-RunQuicktree(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, version="quicktree-tree-lonestar-1.1u1")
+	RunQuicktree(user.name, token, DE.file.name, DE.file.path="", job.name=NULL,
+                     nprocs=1,version="quicktree-tree-lonestar-1.1u1")
 }
 \arguments{
 	\item{user.name}{iPlant Discovery Environment user name}
@@ -13,7 +14,8 @@ RunQuicktree(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, 
 	\item{DE.file.name}{Name of file to be evaluated on the Discovery Environment (DE).}
 	\item{DE.file.path}{Optional path to a user's subdirectory on the DE; default path is empty, which leads to the home directory}
 	\item{job.name}{The name to give the job being submitted}
-	\item{version}{\code{quicktree-dm-lonestar-1.1} or \code{quicktree-tree-lonestar-1.1}}
+	\item{nprocs}{The number of processors to be allocated to the job, default = 1}
+	\item{version}{QuickTree version, options include \code{quicktree-tree-lonestar-1.1u1}, \code{quicktree-tree-lonestar-1.1u2}, \code{quicktree-dm-lonestar-1.1u1}, \code{quicktree-dm-lonestar-1.1u2}}
 }
 \details{
 	The function is a wrapper function for several other rPlant functions, but specific to QuickTree runs.  
@@ -25,5 +27,5 @@ RunQuicktree(user.name, token, DE.file.name="", DE.file.path="", job.name=NULL, 
 	Text listing action as either being a "success" or "error". If an error, then a message stating the error should also be reported.  
 }
 \examples{
-	# RunQuicktree(user.name, token, DE.file.name="ex.lp.fasta", DE.file.path="", job.name="QTrun")
+	# RunQuicktree(user.name, token, DE.file.name="ex.lp.fasta", job.name="QTrun")
 }	

@@ -12,6 +12,7 @@ ResolveNames <- function(names, max.per.call=100, verbose=TRUE) {
   names <- sapply(names, sub, pattern="_", replacement=" ", USE.NAMES=FALSE)
   names <- sapply(names, URLencode, USE.NAMES = FALSE)
   names <- sapply(names, sub, pattern="=", replacement="", USE.NAMES=FALSE)
+  names <- sapply(names, sub, pattern="&", replacement="", USE.NAMES=FALSE)
   call.base <- 'http://tnrs.iplantc.org/tnrsm-svc/matchNames?retrieve=best&names='
   new.names <- rep(NA, length(names))
   names.in.call <- 0

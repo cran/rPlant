@@ -1,9 +1,16 @@
-RunMuscle <- function(user.name, token, DE.file.name="", DE.file.path="", 
-                      job.name=NULL, version="muscle-ranger-2.0u2") {
+RunMuscle <- function(user.name, token, DE.file.name, DE.file.path="", job.name=NULL, 
+                      nprocs=1, version="muscle-lonestar-3.8.31u2") {
+
+  App <- GetAppInfo(user.name, token, version)[[2]]
+  input.list <- vector("list",1)
+  input.list[[1]] <- App[,2][1]
+
   if (is.null(job.name))
-    job.name <- paste(user.name,"_", version, "viaAPI", sep="")
+    job.name <- paste(user.name,"_",version,"_viaR", sep="")
+
   myJob<-SubmitJob(user.name, token, application=version, 
-                   DE.file.name=DE.file.name, DE.file.path=DE.file.path, 
-                   job.name=job.name, nprocs=1)
+                   DE.file.list=list(DE.file.name), DE.file.path=DE.file.path, 
+                   input.list=input.list, job.name=job.name, nprocs=nprocs)
+
   return(myJob)
 }

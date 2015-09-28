@@ -1,7 +1,10 @@
 \name{UploadFile}
 \alias{UploadFile}
+\alias{ShareFile}
+\alias{PermissionsFile}
 \alias{RenameFile}
 \alias{MoveFile}
+\alias{CopyFile}
 \alias{DeleteFile}
 \alias{SupportFile}
 \title{File management}
@@ -9,68 +12,74 @@
 	Functions for uploading and manipulating files in the iPlant infrastructure
 }
 \usage{
-UploadFile(user.name, token, local.file.name, local.file.path, 
-           file.type, print.curl=FALSE)
-RenameFile(user.name, token, old.DE.file.name, new.DE.file.name, 
-           DE.file.path, print.curl=FALSE)
-MoveFile(user.name, token, DE.file.name, DE.file.path, DE.end.path, print.curl=FALSE)
-DeleteFile(user.name, token, DE.file.name, DE.file.path, print.curl=FALSE)
-SupportFile(user.name, token, print.curl=FALSE)
+UploadFile(local.file.name, local.file.path="", filetype=NULL,
+           print.curl=FALSE, suppress.Warnings=FALSE)
+ShareFile(file.name, file.path="", shared.username, read=TRUE, 
+          execute=TRUE, write=TRUE, print.curl=FALSE, suppress.Warnings=FALSE)
+PermissionsFile(file.name, file.path="", print.curl=FALSE, suppress.Warnings=FALSE)
+RenameFile(file.name, new.file.name, file.path="", print.curl=FALSE,
+           suppress.Warnings=FALSE)
+CopyFile(file.name, file.path="", end.path="", print.curl=FALSE,
+         suppress.Warnings=FALSE)
+MoveFile(file.name, file.path="", end.path="", print.curl=FALSE,
+         suppress.Warnings=FALSE)
+DeleteFile(file.name, file.path="", print.curl=FALSE, suppress.Warnings=FALSE)
+SupportFile(print.curl=FALSE, suppress.Warnings=FALSE) 
 }
 \arguments{
-	\item{user.name}{iPlant Discovery Environment user name}
-	\item{token}{a validation tool used in place of unencrypted passwords}
-	\item{local.file.name}{Name of local file on user's computer.  This file
-	      cannot be an object in the R workspace.}
-	\item{DE.file.name}{Name of file to be modified on the Discovery Environment
-	      (DE).}
-	\item{file.type}{format of file that is to be uploaded. Currently 34 file
-	      formats supported} 
-	\item{old.DE.file.name}{the name of the file on DE to be renamed}
-	\item{new.DE.file.name}{the new name of the file on DE to be renamed} 
-	\item{local.file.path}{optional path to a sub directory where local file on
-	      user's computer is located (include ENTIRE path); default path is
-	      empty which leads to a users home directory}
-	\item{DE.file.path}{optional path to a sub directory where file on DE is
-	      located; default path is empty which leads to a users home directory}
-	\item{DE.end.path}{optional path to destination sub directory where file on
-	      DE is moved to; default path is empty which leads to a users home
-	      directory}
-	\item{print.curl}{Prints the Curl Statement that can be used in the
-	      terminal}
+	\item{local.file.name}{Name of local file on user's computer.  This file cannot be an object in the R workspace.}
+	\item{local.file.path}{optional path to a sub directory where local file on user's computer is located (include ENTIRE path); default path is empty which leads to a users home directory}
+	\item{filetype}{format of file that is to be uploaded. Currently 34 file formats supported.  A filetype is not required to upload the file, but some applications require that your data set have a file type assigned to it.}
+	\item{file.name}{Name of file to be modified on the iPlant servers.}
+	\item{new.file.name}{the new name of the file on the iPlant server to be renamed} 
+	\item{file.path}{optional path to a sub directory where file on the iPlant server is located; default path is empty which leads to a users home directory}
+	\item{end.path}{Path to destination sub directory where file on DE is moved to; default path is empty which leads to a users home directory}
+	\item{read}{Gives read permissions for shared file}
+	\item{write}{Gives write permissions for shared file}
+	\item{execute}{Gives execute permissions for shared file}
+	\item{shared.username}{With iPlant you have the ability to share files with other users, their username is the value for the shared.username}
+	\item{print.curl}{Prints the curl statement that can be used in the terminal, if curl is installed on your computer}
+	\item{suppress.Warnings}{This will turn off the warnings, will speed up run time.  Use with caution, if the inputs are incorrect they will not be caught.}
 }
 \details{
-	The function SupportFile provides a list of the supported file types that can be uploaded onto iPlant.
+	The \code{SupportFile} function provides a list of the supported file types that can be uploaded onto the iPlant servers.  The \code{UploadFile} function uploads a file, \code{local.file.name}, that is on your computer (i.e. local directory), in the directory \code{local.file.path}.  If the \code{local.file.path} is not specified your working directory is the default path (use \code{getwd()} to find that).  The \code{filetype} is NOT required, but if you do use it then use the \code{SupportFile} function to view the 34 file formats that are supported (i.e. for a fasta file use \code{FASTA-0}).  iPlant offers sharing of files between two (or more) iPlant users, the \code{ShareFile} makes it so.  Once sharing is done a user can use \code{PermissionsFile} on any file to find who the file is shared with.  The \code{RenameFile} function renames the \code{file.name} in \code{file.path} (on the iPlant servers), to the \code{new.file.name}.  The \code{CopyFile} function copies a \code{file.name} in the \code{file.path} to the \code{end.path}.  The \code{MoveFile} function moves a \code{file.name} in the \code{file.path} to the \code{end.path}.  The \code{DeleteFile} function  deletes the \code{file.name} in the \code{file.path}.
 }
 \seealso{
-	\code{\link{SupportFile}}
 	\code{\link{ListDir}}
 }
 \value{
-	Text listing action as either being a "success" or "error". If an error, then a message stating the error should also be reported.  
+	If an error, then a message stating the error should also be reported.  
 }
 \examples{
 # Write .fasta file to home directory
-# data(ex.lp.fasta)
-# write.fasta(sequences = ex.lp.fasta, names = names(ex.lp.fasta), file.out =
-#             "ex.lp.fasta") 
+\dontrun{data(DNA.fasta)}
+\dontrun{write.fasta(sequences = DNA.fasta, names = names(DNA.fasta), 
+                     file.out = "DNA.fasta")}
+\dontrun{UploadFile(local.file.name="DNA.fasta", local.file.path="path/to/dir", 
+                    filetype="FASTA-0")}
          
 # Upload a file to the DE
-# UploadFile("User", token, local.file.name="ex.lp.fasta", file.type="FASTA-0")
-# UploadFile("User", token, local.file.name="ex.lp.fasta",
-#            local.file.path="/path/", file.type="FASTA-0")
-     
+\dontrun{data(geno_test.tfam)}
+\dontrun{UploadFile(local.file.name="geno_test.tfam")}
+
+# Shares the file named "DNA.fasta" with the iPlant user "dude"
+\dontrun{ShareFile(file.name="DNA.fasta", shared.username="dude")}
+
+# Checks permissions on file "DNA.fasta"
+\dontrun{PermissionsFile(file.name="DNA.fasta")}
+
 # Rename a file 
-# RenameFile("User", token, old.DE.file.name="ex.lp.fasta",
-#            new.DE.file.name="lp.fasta", DE.file.path="/data/")
+\dontrun{RenameFile(file.name="DNA.fasta", new.file.name="lp.fasta")}
+
+# Copy a file from the subdirectory 'rPlant' to the home directory
+\dontrun{CopyFile(file.name="lp.fasta", file.path="", end.path="data")}
              
-# Move a file from the subdirectory rplant to the home directory
-# MoveFile("User", token, DE.file.name="lp.fasta", DE.file.path="/data/",
-#          DE.end.path="")
+# Move a file from the subdirectory 'rPlant' to the home directory
+\dontrun{MoveFile(file.name="lp.fasta", file.path="", end.path="data")}
      
 # Delete a file in the home directory
-# DeleteFile("User", token, DE.file.name="lp.fasta", DE.file.path="")
+\dontrun{DeleteFile(file.name="lp.fasta", DE.file.path="data")}
 
 # Lists file types that are supported
-# SupportFile("User", token)  
-}	
+\dontrun{SupportFile()}
+}

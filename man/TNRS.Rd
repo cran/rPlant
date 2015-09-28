@@ -12,13 +12,13 @@
 ResolveNames(names, max.per.call=100, verbose=TRUE) 
 GetPhylotasticToken(names, max.per.call=100, verbose=TRUE) 
 RetrieveTNRSNames(names, token, source=c("iPlant_TNRS", "NCBI"),
-                  match.threshold=0.5, verbose=F)
+                  match.threshold=0.5, verbose=FALSE)
 CompareNames(old.names, new.names, verbose=TRUE)
 }
 \arguments{
 	\item{names}{Vector of names to be resolved via TNRS}
 	\item{max.per.call}{The number of names to submit at a time, default is 100}
-	\item{verbose}{Optional screen output that displays all of the results from the api, default = TRUE}
+	\item{verbose}{Optional screen output that displays all of the results from the api}
 	\item{token}{Unique identifier from the GetPhylotasticToken function used to retrieve names}
 	\item{source}{Which source to utilize to check names}
 	\item{match.threshold}{Threshold to accept new name}
@@ -26,17 +26,18 @@ CompareNames(old.names, new.names, verbose=TRUE)
 	\item{new.names}{Returned TNRS names}
 }
 \value{
-	Vector of taxonomic names for \code{ResolveNames} and \code{RetrieveTNRSNames}.  
-	Unique identifier (=token) for \code{GetPhylotasticToken}
+	Vector of taxonomic names for \code{ResolveNames} and \code{RetrieveTNRSNames}. Unique identifier (=token) for \code{GetPhylotasticToken}
 }
 \examples{
-	# data(ex.lp.fasta)
-	# speciesNames<-getName(ex.lp.fasta)
+data(DNA.fasta)
+speciesNames <- names(DNA.fasta)
 
-	# TNRSspeciesNames<-ResolveNames(speciesNames, 100, verbose=F)
+#Taxonomic name checking by iPlant TNRS
+\dontrun{TNRSspeciesNames <- ResolveNames(speciesNames, 100, verbose=F)}
 
-	# token <- GetPhylotasticToken(names)
-	# RetrieveNames(token)
-	
-	# CompareNames(speciesNames, TNRSspeciesNames, verbose=TRUE)
+#Taxonomic name checking by Phylotastic Taxosaurus
+token <- GetPhylotasticToken(speciesNames)
+TNRSSpeciesNames <- RetrieveTNRSNames(speciesNames, token, "NCBI")
+CompareNames(speciesNames, TNRSSpeciesNames, verbose=TRUE)
+
 }

@@ -1,2 +1,5 @@
-export(GetToken, RenewToken, UploadFile, RenameFile, MoveFile, DeleteFile, SupportFile, ListDir, MakeDir, DeleteDir, ListApps, GetAppInfo, SubmitJob, CheckJobStatus, DeleteJob, RetrieveJob, ListJobOutput, GetJobHistory, ResolveNames, GetPhylotasticToken, RetrieveTNRSNames, CompareNames, GetCitations, RunMuscle, RunParsdna, RunParsprotein, RunRAxMLdna, RunRAxMLprotein, RunQuicktree, RunMafft, RunClustal)
-import(seqinr,RCurl,rjson)
+export(TestApp, Error, Renew, Validate, UploadFile, ShareFile, PermissionsFile, RenameFile, CopyFile, MoveFile, DeleteFile, SupportFile, ListDir, ShareDir, PermissionsDir, RenameDir, CopyDir, MoveDir, MakeDir, DeleteDir, ListApps, GetAppInfo, SubmitJob, CheckJobStatus, KillJob, DeleteJob, RetrieveJob, ListJobOutput, GetJobHistory, ResolveNames, GetPhylotasticToken, RetrieveTNRSNames, CompareNames, Muscle, RAxML, Mafft, ClustalW, PLINK, PLINKConversion, FaST_LMM, find.input, Fasttree, Wait, Time, Check, appINFO)
+import(RCurl, rjson, seqinr)
+importFrom("utils", "URLencode")
+importFrom("stats", "runif") 
+export(rplant.env)

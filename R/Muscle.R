@@ -41,8 +41,7 @@ Muscle <- function(file.name, file.path="", job.name=NULL, args=NULL,
     args <- list(c("arguments",args))
 
   } else {
-    privAPP=TRUE
-    version="Muscle_stampede-3.8.31"  
+    version="Muscle-3.8.31u1"  
 
     if (aln.filetype == "PHYLIP_INT"){
       fm <- append(fm, "-phyiout")
@@ -96,8 +95,7 @@ Muscle <- function(file.name, file.path="", job.name=NULL, args=NULL,
   myJob<-SubmitJob(application=version, job.name=job.name, args.list=args,
                    file.list=list(file.name), file.path=file.path, email=email,
                    input.list=input.list, suppress.Warnings=suppress.Warnings,
-                   print.curl=print.curl, shared.username=shared.username,
-                   private.APP=privAPP)
+                   print.curl=print.curl, shared.username=shared.username)
 
   cat(paste("Result file: ", out.name, "\n", sep=""))
   return(myJob)

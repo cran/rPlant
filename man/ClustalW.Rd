@@ -9,7 +9,7 @@
 \usage{
 ClustalW(file.name, file.path="", type="DNA", aln.filetype="CLUSTALW", 
          args=NULL, out.name=NULL, job.name=NULL, print.curl=FALSE,   
-         shared.username=NULL, suppress.Warnings=FALSE, email=TRUE)
+         shared.username=NULL, suppress.Warnings=FALSE)
 }
 \arguments{
 	\item{file.name}{Name of file to be evaluated on the Discovery Environment (DE), see details for supported input formats.}
@@ -22,7 +22,6 @@ ClustalW(file.name, file.path="", type="DNA", aln.filetype="CLUSTALW",
 	\item{print.curl}{Prints the curl statement that can be used in the terminal, if curl is installed on your computer}
 	\item{shared.username}{With iPlant you have the ability to share folders with other users.  If someone has shared a folder with you and you want to run a job with them, enter their username for this input.}
 	\item{suppress.Warnings}{This will turn off the warnings, will speed up run time.  Use with caution, if the inputs are incorrect they will not be caught.}
-	\item{email}{By default an email will be sent to the user when the job finishes.}
 }
 \seealso{
 	\code{\link{SubmitJob}, \link{Validate}, \link{UploadFile}}

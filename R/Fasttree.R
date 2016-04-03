@@ -1,7 +1,7 @@
 Fasttree <- function(file.name, file.path="", job.name=NULL, out.name=NULL, 
                      args=NULL, type="DNA", model=NULL, gamma=FALSE, stat=FALSE,
-                     print.curl=FALSE, shared.username=NULL, email=TRUE,
-                     suppress.Warnings=FALSE) {
+                     print.curl=FALSE, shared.username=NULL, suppress.Warnings=FALSE) {
+                     
 
   # FastTree infers approximately-maximum-likelihood phylogenetic trees 
   #   from alignments of nucleotide or protein sequences.
@@ -90,8 +90,7 @@ Fasttree <- function(file.name, file.path="", job.name=NULL, out.name=NULL,
 
   } else {
 
-    privAPP=TRUE
-    version="rb-FasttreeDispatcher-2.1.4" 
+    version="FasttreeDispatcher-2.1.4u2" 
 
     options=NULL
   
@@ -126,10 +125,10 @@ Fasttree <- function(file.name, file.path="", job.name=NULL, out.name=NULL,
   }
 
   myJob<-SubmitJob(application=version, job.name=job.name, nprocs=nprocs,
-                   file.list=list(file.name), file.path=file.path, email=email,
+                   file.list=list(file.name), file.path=file.path, 
                    input.list=input.list, suppress.Warnings=suppress.Warnings,
                    print.curl=print.curl, shared.username=shared.username,
-                   args.list=args, private.APP=privAPP)
+                   args.list=args)
 
   return(myJob)
 }

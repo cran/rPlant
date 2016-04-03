@@ -5,15 +5,15 @@
 \alias{raxml}
 \title{RAxML}
 \description{
-	RAxML (Randomized Accelerated Maximum Likelihood) is a program for sequential and parallel Maximum Likelihood based inference of large phylogenetic tress.  It has originall been derived from from fastDNAml which in turn was derived from Joe Felsentein's dnaml which is part of the PHYLIP package. See \url{http://bioinformatics.oxfordjournals.org/content/suppl/2014/01/18/btu033.DC1/NewManual.pdf} for details.
+	RAxML (Randomized Accelerated Maximum Likelihood) is a program for sequential and parallel Maximum Likelihood based inference of large phylogenetic tress.  It originally had been derived from fastDNAml which in turn was derived from Joe Felsentein's dnaml which is part of the PHYLIP package. See \url{http://bioinformatics.oxfordjournals.org/content/suppl/2014/01/18/btu033.DC1/NewManual.pdf} for details.  The app details can be found here: \url{https://pods.iplantcollaborative.org/wiki/display/DEapps/RAxML-8.2.3_small_and_medium}.
 }
 \usage{
 RAxML(file.name, file.path="", type="DNA", out.name=NULL, 
       model=NULL, bootstrap=NULL, algorithm="d", rseed=NULL,
-      multipleModelFileName=NULL, args=NULL, numcat=25, nprocs=12,
-      job.name=NULL, print.curl=FALSE, shared.username=NULL, 
+      args=NULL, numcat=25, nprocs=12, job.name=NULL, 
+      print.curl=FALSE, shared.username=NULL, small=TRUE,
       substitution.matrix=NULL, empirical.frequencies=FALSE,
-      suppress.Warnings=FALSE, email=TRUE)
+      suppress.Warnings=FALSE)
 }
 \arguments{
 	\item{file.name}{Name of file to be evaluated on the Discovery Environment (DE), see details for supported input formats.}
@@ -26,15 +26,13 @@ RAxML(file.name, file.path="", type="DNA", out.name=NULL,
 	\item{empirical.frequencies}{(F) Only used for protein alighnments, with appendix you can specify if you want to use empirical base frequencies.}
 	\item{bootstrap}{(-b) Random Seed Number for non-parametric bootstrapping, details bottom of p. 7 of manual}
 	\item{algorithm}{(-f) Select the type of algorithm/function you want. "d" is default, details bottom of p. 8 of manual}
-
-	\item{multipleModelFileName}{(-q) substitution model file, details bottom of p. 7 of manual}
 	\item{numcat}{(-c) Specify the number of distinct rate categories, details top of p. 13 of manual}
 	\item{nprocs}{The number of processors to be allocated to the job, default = 12}
+	\item{small}{The size of data set is small, if large set to small=FALSE}
 	\item{job.name}{the name to give the job being submitted}
 	\item{print.curl}{Prints the curl statement that can be used in the terminal, if curl is installed on your computer}
 	\item{shared.username}{With iPlant you have the ability to share folders with other users.  If someone has shared a folder with you and you want to run a job with them, enter their username for this input.  Then the dir.path becomes the path to the SHARED user's shared folder.}
 	\item{suppress.Warnings}{This will turn off the warnings, will speed up run time.  Use with caution, if the inputs are incorrect they will not be caught.}
-	\item{email}{By default an email will be sent to the user when the job finishes.}
 	\item{args}{Optional for arguments (i.e. flags).  The RAxML model has much additional functionality that is not fit into this wrapper function (\url{http://bioinformatics.oxfordjournals.org/content/suppl/2014/01/18/btu033.DC1/NewManual.pdf}), see details.  This option allows users to add anything that is not included (.i.e. args="-d"), which starts the RAxML search with a random starting tree, see detals.}
 }
 \details{

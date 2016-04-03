@@ -25,6 +25,18 @@
 #####################
 rplant.env <- new.env()
 
+MHmakeRandomString <- function(n=1, lenght=12)
+{
+    randomString <- c(1:n)                  # initialize vector
+    for (i in 1:n)
+    {
+        randomString[i] <- paste(sample(c(0:9, letters, LETTERS),
+                                 lenght, replace=TRUE),
+                                 collapse="")
+    }
+    return(randomString)
+}
+
 Create_Keys <- function(user, pwd, print.curl=FALSE) {
   # Calls the Agave API, if the user already has a key and secret for rPlant, 
   #   then it fetches them, o/w it creates the keys, and subscribes to the 
@@ -42,8 +54,9 @@ Create_Keys <- function(user, pwd, print.curl=FALSE) {
   curl.call <- getCurlHandle(userpwd        = paste(user, pwd, sep=":"), 
                              httpauth       = 1L, 
                              ssl.verifypeer = FALSE)
+  client <- MHmakeRandomString()
   res <- tryCatch(expr  = fromJSON(postForm(web, 
-                                            clientName  = "rPlant",
+                                            clientName  = client,
                                             tier        = "Unlimited", 
                                             description = "", 
                                             callbackUrl = "", 
@@ -2044,7 +2057,7 @@ GetAppInfo <- function(application, return.json=FALSE, print.curl=FALSE) {
 #      }
       if (eval(parse(text=paste(tmp_string,"$parameters[[parameter]]$value$type", sep=""))) == "enumeration") {
           for (i in c(1:length(eval(parse(text=paste(tmp_string,"$parameters[[parameter]]$value$enum_values", sep="")))))) {
-app.info <- rbind(app.info, c("", paste("enum-choice",i), names(eval(parse(text=paste(tmp_string,"$parameters[[parameter]]$value$enum_values[[i]]", sep="")))), ""))
+app.info <- rbind(app.info, c("", paste("enum-choice",i), names(eval(parse(text=paste(tmp_string,"$parameters[[parameter]]$value$enum_values[[i]]", sep="")))), eval(parse(text=paste(tmp_string,"$parameters[[parameter]]$value$enum_values[[i]][[1]]", sep="")))))
 }
       }
   }
@@ -2088,6 +2101,7 @@ app.info <- rbind(app.info, c("", paste("enum-choice",i), names(eval(parse(text=
   }
 }
 
+
 # -- END -- #
  
 
@@ -2102,7 +2116,7 @@ app.info <- rbind(app.info, c("", paste("enum-choice",i), names(eval(parse(text=
 SubmitJob <- function(application, file.path="", file.list=NULL, input.list, 
                       args.list=NULL, job.name, nprocs=1, private.APP=FALSE, 
                       suppress.Warnings=FALSE, shared.username=NULL,
-                      print.curl=FALSE, email=TRUE) {
+                      print.curl=FALSE) {
   
   if (private.APP) {
     suppress.Warnings=TRUE
@@ -2227,6 +2241,7 @@ SubmitJob <- function(application, file.path="", file.list=NULL, input.list,
                   call. = FALSE))
     }
   }
+
   # If the application can be run in parallel, then increase the number of
   #   processors to be used.  A user cannot use more than 512 processors
   if (set == "PARALLEL"){
@@ -2255,18 +2270,21 @@ SubmitJob <- function(application, file.path="", file.list=NULL, input.list,
   content[6] <- paste("archivePath=", rplant.env$user, "analyses", 
                       job.name, sep="/"); x <- 6; # x tells the length of options
 
+  ### I had the email working, but it currently does not, if someone in the 
+  ###   future gets it running again, that would be swell.  Currently I will just
+  ###   comment it out.
   # If email is TRUE
-  if (email==TRUE){
-    Renew()
-    res <- tryCatch(expr  = fromJSON(getURLContent(url  = rplant.env$webprofiles, 
-                                                   curl = rplant.env$curl.call)), 
-                    error = function(err) {
-                              return(paste(err))
-                            }
-                    )
-    Error(res)
-    content[7] <- paste(eml_string, res$result[[1]]$email, sep=""); x <- 7;
-  }
+#  if (email==TRUE){
+#    Renew()
+#    res <- tryCatch(expr  = fromJSON(getURLContent(url  = rplant.env$webprofiles, 
+#                                                   curl = rplant.env$curl.call)), 
+#                    error = function(err) {
+#                              return(paste(err))
+#                            }
+#                    )
+#    Error(res)
+#    content[7] <- paste(eml_string, res$result[[1]]$email, sep=""); x <- 7;
+#  }
 
   # For the loop below n needs to be initialized
   if(!is.null(file.list)){n <- length(file.list)} else {n <- 0}

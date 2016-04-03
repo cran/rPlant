@@ -1,15 +1,15 @@
-PLINKConversion <- function(file.list="", file.path="", output.type="--recode",
+PLINKConversion <- function(file.list="", file.path="", output.type="PED/MAP",
                             job.name=NULL, shared.username=NULL, 
                             print.curl=FALSE, suppress.Warnings=FALSE,
-                            out.basename=NULL, email=TRUE) {
+                            out.basename=NULL) {
 
-  if (rplant.env$api == "a") {
-    privAPP=TRUE
-    version="plink-beta-1.07"
-  } else {
-    privAPP=FALSE
-    version="plink-1.07u1"
-  }
+  output.type <- match.arg(output.type, c("PED/MAP", "TFAM/TPED", "BED/FAM/BIM", "LGEN", "RAWa", "RAWad", "PED/MAP-1/2", "FASTPHASE", "BIMBAM", "STRUCTURE"))
+  
+#   privAPP=TRUE
+#   version="plinkconv-beta-1.07"
+
+  privAPP=FALSE
+  version="PLINKconv-hpc-1.07u1"
   
   input.len <- length(file.list)
   input.list <- list()
@@ -33,7 +33,27 @@ PLINKConversion <- function(file.list="", file.path="", output.type="--recode",
     }
   }
 
-  args <- c(output.type)
+  if (output.type == "PED/MAP") {
+    type = "--recode"
+  } else if (output.type == "TFAM/TPED") {
+    type = "--recode --transpose"
+  } else if (output.type == "BED/FAM/BIM") {
+    type = "--make-bed"
+  } else if (output.type == "LGEN") {
+    type = "--recode-lgen"
+  } else if (output.type == "RAWa") {
+    type = "--recodeA"
+  } else if (output.type == "RAWad") {
+    type = "--recodeAD"
+  } else if (output.type == "PED/MAP-1/2") {
+    type = "--recode12"
+  } else if (output.type == "FASTPHASE") {
+    type = "--recode-fastphase"
+  } else if (output.type == "BIMBAM") {
+    type = "--recode-bimbam"
+  } else {
+    type = "--recode-structure"
+  }
 
   if (input.type=="T"){
     options <- list(c("T",TRUE))
@@ -47,7 +67,6 @@ PLINKConversion <- function(file.list="", file.path="", output.type="--recode",
         out.basename <- paste(BASE2,"_",BASE1, sep="")
       }
     }
-    args <- append(args, c("--out",out.basename))
   } else if (input.type=="B") {
     options <- list(c("B",TRUE))
     if (is.null(out.basename)){
@@ -71,7 +90,6 @@ PLINKConversion <- function(file.list="", file.path="", output.type="--recode",
         out.basename <- paste(BASE3, "_", BASE2, "_", BASE1, sep="")
       }
     }
-    args <- append(args, c("--out",out.basename))
   } else {
     options <- NULL
     if (is.null(out.basename)){
@@ -84,20 +102,22 @@ PLINKConversion <- function(file.list="", file.path="", output.type="--recode",
         out.basename <- paste(BASE2,"_",BASE1,"_", sep="")
       }
     }
-    args <- append(args, c("--out", out.basename))
   }
 
+  if (is.null(options)) {
+    options <- list(c("format", type))
+  } else {
+    options <- append(options, list(c("format", type)))
+  }
+  options <- append(options, list(c("inputOUT", out.basename)))
+  
   if (is.null(job.name)){
     job.name <- out.basename
   }
 
-  # make a single statement
-  args <- paste(args, collapse=" ") 
-  options <- append(options, list(c("arguments",args)))
-
   # Submit
   myJob<-SubmitJob(application=version, args.list=options, job.name=job.name,
-                   file.list=file.list, file.path=file.path, email=email,  
+                   file.list=file.list, file.path=file.path, 
                    input.list=input.list, suppress.Warnings=suppress.Warnings,
                    shared.username=shared.username, print.curl=print.curl,
                    private.APP=privAPP)

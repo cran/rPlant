@@ -1,9 +1,9 @@
 RAxML <- function(file.name, file.path="", type="DNA", out.name=NULL, 
                   model=NULL, bootstrap=NULL, algorithm="d", rseed=NULL,
-                  multipleModelFileName=NULL, args=NULL, numcat=25, nprocs=12,
-                  job.name=NULL, print.curl=FALSE, shared.username=NULL, 
+                  args=NULL, numcat=25, nprocs=12, job.name=NULL, 
+                  print.curl=FALSE, shared.username=NULL, small=TRUE,
                   substitution.matrix=NULL, empirical.frequencies=FALSE,
-                  suppress.Warnings=FALSE, email=TRUE) {
+                  suppress.Warnings=FALSE) {
 
   type <- match.arg(type, c("DNA", "PROTEIN"))
       
@@ -64,9 +64,12 @@ RAxML <- function(file.name, file.path="", type="DNA", out.name=NULL,
   }
 
   if (rplant.env$api == "a") {
- #   version="RAxML-8.1.17"
-    priv.APP=TRUE
-    version="raxml-gamma-8.1.17"
+    if (small) {
+      version="RAxML-small-8.2.3u1"
+    } else {
+      version="RAxML-medium-8.2.3u1"
+    }
+
     App <- GetAppInfo(version)[[3]]
     input.list <- vector("list",1)
     input.list[[1]] <- App[,2][1]
@@ -77,7 +80,7 @@ RAxML <- function(file.name, file.path="", type="DNA", out.name=NULL,
     args <- NULL
     args <- append(args, list(c("model", model)))
     args <- append(args, list(c("N", 10)))
-    args <- append(args, list(c("threads", nprocs)))
+  #  args <- append(args, list(c("threads", nprocs)))
   
     if (is.null(rseed)){
       args <- append(args, list(c("p", 123456)))
@@ -98,9 +101,6 @@ RAxML <- function(file.name, file.path="", type="DNA", out.name=NULL,
     #options <- append(options, c("-#", numberOfRuns))
     options <- append(options, c("-c", numcat))
   
-    if(!is.null(multipleModelFileName)) {
-      options <- append(options, c("-q", multipleModelFileName))
-    }
     options <- paste(options, collapse=" ")  # make a single statement
    
     args <- append(args, list(c("options", options)))
@@ -135,9 +135,6 @@ RAxML <- function(file.name, file.path="", type="DNA", out.name=NULL,
       args <- append(args, c("-n", "nwk"))
     }
     
-    if(!is.null(multipleModelFileName)) {
-      args <- append(args, c("-q", multipleModelFileName))
-    }
     args <- paste(args, collapse=" ")  # make a single statement
    
     args <- list(c("arguments", args))
@@ -153,6 +150,6 @@ RAxML <- function(file.name, file.path="", type="DNA", out.name=NULL,
                    file.list=list(file.name), file.path=file.path, 
                    input.list=input.list, suppress.Warnings=suppress.Warnings,
                    print.curl=print.curl, shared.username=shared.username,
-                   args.list=args, email=email, private.APP=TRUE)
+                   args.list=args)
   return(myJob)
 }

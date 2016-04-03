@@ -1,14 +1,14 @@
 \name{FaST_LMM}
 \alias{FaST_LMM}
 \title{FaST-LMM-2.07}
-\description{	FaST-LMM (Factored Spectrally Transformed Linear Mixed Models) is a program for performing genome-wide association studies (GWAS) on large data sets.  FaST-LMM is described more fully at \url{http://www.nature.com/nmeth/journal/v8/n10/abs/nmeth.1681.html}, and also at \url{http://fastlmm.codeplex.com/}
+\description{FaST-LMM (Factored Spectrally Transformed Linear Mixed Models) is a program for performing genome-wide association studies (GWAS) on large data sets.  The FaST-LMM iPlant APP is described more fully at \url{https://pods.iplantcollaborative.org/wiki/display/DEapps/FaST-LMM}.  The program details including downloads and further help pages at \url{http://research.microsoft.com/en-us/um/redmond/projects/mscompbio/fastlmm/}.
 }
 \usage{
 FaST_LMM(input.file.list="", ALL.file.path="", print.curl=FALSE,
          sim.file.list=NULL, pheno.file.name=NULL, mpheno=1,
          args=NULL, covar.file.name=NULL, job.name=NULL, 
          shared.username=NULL, suppress.Warnings=FALSE,
-         out.basename=NULL, email=TRUE) 
+         out.basename=NULL) 
 }
 \arguments{
 	\item{input.file.list}{(required) Names of files, in a list format, to be evaluated on the iPlant servers.  There are only three possible input groups for file.list, regular fileset (.map/.ped),  transposed fileset (.tfam/.tped), and binary fileset (.bed/.bim/.fam).}
@@ -23,7 +23,6 @@ FaST_LMM(input.file.list="", ALL.file.path="", print.curl=FALSE,
 	\item{print.curl}{Prints the curl statement that can be used in the terminal, if curl is installed on your computer}
 	\item{shared.username}{With iPlant you have the ability to share folders with other users.  If someone has shared a folder with you and you want to run a job with them, enter their username for this input.}
 	\item{suppress.Warnings}{This will turn off the warnings, will speed up run time.  Use with caution, if the inputs are incorrect they will not be caught.}
-	\item{email}{By default an email will be sent to the user when the job finishes.}
 }
 \details{
 	The inputs for \code{input.file.list} are to be used only in three very strict groups.  Group 1: TFAM, TPED, these are the PLINK transposed filesets.  Group 2: MAP, PED, these are the PLINK regular filesets.  Group 3: BED, BIM, FAM, these are the PLINK binary filesets.

@@ -1,6 +1,6 @@
 Muscle <- function(file.name, file.path="", job.name=NULL, args=NULL,
                    aln.filetype="PHYLIP_INT", shared.username=NULL, out.name=NULL,
-                   suppress.Warnings=FALSE, email=TRUE, print.curl=FALSE) {
+                   suppress.Warnings=FALSE, print.curl=FALSE) {
 
   fm=NULL
   aln.filetype <- match.arg(aln.filetype, c("PHYLIP_INT", "PHYLIP_SEQ", "HTML", "FASTA", "CLUSTALW", "MSF"))
@@ -41,7 +41,7 @@ Muscle <- function(file.name, file.path="", job.name=NULL, args=NULL,
     args <- list(c("arguments",args))
 
   } else {
-    version="Muscle-3.8.31u1"  
+    version="Muscle-hpc-3.8.31u1"  
 
     if (aln.filetype == "PHYLIP_INT"){
       fm <- append(fm, "-phyiout")
@@ -93,7 +93,7 @@ Muscle <- function(file.name, file.path="", job.name=NULL, args=NULL,
   }
 
   myJob<-SubmitJob(application=version, job.name=job.name, args.list=args,
-                   file.list=list(file.name), file.path=file.path, email=email,
+                   file.list=list(file.name), file.path=file.path,
                    input.list=input.list, suppress.Warnings=suppress.Warnings,
                    print.curl=print.curl, shared.username=shared.username)
 

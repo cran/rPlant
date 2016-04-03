@@ -7,7 +7,7 @@
 \usage{
 Muscle(file.name, file.path="", job.name=NULL, args=NULL,
        aln.filetype="PHYLIP_INT", shared.username=NULL, out.name=NULL,
-       suppress.Warnings=FALSE, email=TRUE, print.curl=FALSE)
+       suppress.Warnings=FALSE, print.curl=FALSE)
 }
 \arguments{
 	\item{file.name}{name of file to be evaluated on the Discovery Environment (DE), see details for supported input formats.}
@@ -18,7 +18,6 @@ Muscle(file.name, file.path="", job.name=NULL, args=NULL,
 	\item{print.curl}{Prints the curl statement that can be used in the terminal, if curl is installed on your computer}
 	\item{shared.username}{With iPlant you have the ability to share folders with other users.  If someone has shared a folder with you and you want to run a job with them, enter their username for this input.}
 	\item{suppress.Warnings}{This will turn off the warnings, will speed up run time.  Use with caution, if the inputs are incorrect they will not be caught.}
-	\item{email}{By default an email will be sent to the user when the job finishes.}
 	\item{args}{Optional for arguments (i.e. flags).  The Muscle model has much additional functionality that is not fit into this wrapper function (\url{http://www.drive5.com/muscle/muscle_userguide3.8.html#_Toc260497051}), see details.  This option allows users to add anything that is not included (.i.e. args="-spscore"), which computes SP objective score, see details.}
 }
 \details{

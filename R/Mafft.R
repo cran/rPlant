@@ -1,6 +1,6 @@
 Mafft <- function(file.name, file.path="", type="DNA", aln.filetype="FASTA", args=NULL, 
-                  out.name=NULL, print.curl=FALSE, job.name=NULL, email=TRUE,
-                  shared.username=NULL, suppress.Warnings=FALSE) {
+                  out.name=NULL, print.curl=FALSE, job.name=NULL, shared.username=NULL, 
+                  suppress.Warnings=FALSE) {
 
   type <- match.arg(type, c("DNA", "PROTEIN"))
 
@@ -68,7 +68,7 @@ Mafft <- function(file.name, file.path="", type="DNA", aln.filetype="FASTA", arg
   }
 
   myJob<-SubmitJob(application=version, job.name=job.name, nprocs=nprocs,
-                   file.list=list(file.name), file.path=file.path, email=email,
+                   file.list=list(file.name), file.path=file.path,
                    input.list=input.list, suppress.Warnings=suppress.Warnings,
                    print.curl=print.curl, shared.username=shared.username,
                    args.list=args, private.APP=privAPP)

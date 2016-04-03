@@ -1,6 +1,6 @@
 ClustalW <- function(file.name, file.path="", type="DNA", aln.filetype="CLUSTALW", 
                      args=NULL, out.name=NULL, job.name=NULL, print.curl=FALSE,   
-                     shared.username=NULL, suppress.Warnings=FALSE, email=TRUE) {
+                     shared.username=NULL, suppress.Warnings=FALSE) {
 
   #  An approach for performing multiple alignments of large numbers of
   #   amino acid or nucleotide sequences is described. Input is a fasta file
@@ -62,8 +62,7 @@ ClustalW <- function(file.name, file.path="", type="DNA", aln.filetype="CLUSTALW
     args <- list(c("arguments",args))
     out.name <- "clustalw2.aln"
   } else {
-    privAPP=TRUE
-    version="rb-Clustalw-2.1.0"  
+    version="Clustalw-2.1.0u2"  
     options=NULL
     # Get the appropriate flags for the function
     if (type == "DNA"){
@@ -130,10 +129,10 @@ ClustalW <- function(file.name, file.path="", type="DNA", aln.filetype="CLUSTALW
   }
     
   myJob<-SubmitJob(application=version, job.name=job.name, nprocs=nprocs, 
-                   file.list=list(file.name), file.path=file.path, email=email,
+                   file.list=list(file.name), file.path=file.path, 
                    input.list=input.list, suppress.Warnings=suppress.Warnings,
                    print.curl=print.curl, shared.username=shared.username,
-                   args.list=args, private.APP=privAPP)
+                   args.list=args)
 
   cat(paste("Result file: ", out.name, "\n", sep=""))
   return(myJob)

@@ -2,12 +2,13 @@
 \alias{Mafft}
 \title{MAFFT Multiple Sequence Alignment}
 \description{
-	MAFFT is a multiple sequence alignment program for unix-like operating systems.  It offers a range of multiple alignment methods, L-INS-i (accurate; for alignment of about 200 sequences), FFT-NS-2 (fast; for alignment of about 10,000 sequences), etc.  See \url{http://mafft.cbrc.jp/alignment/software/}.  The manual is also available here: \url{http://mafft.cbrc.jp/alignment/software/manual/manual.html} 
+	WRAPPER DEPRECATED \cr -- one can install mafft on Agave API and use this wrapper as a prototype -- \cr
+        MAFFT is a multiple sequence alignment program for unix-like operating systems.  It offers a range of multiple alignment methods, L-INS-i (accurate; for alignment of about 200 sequences), FFT-NS-2 (fast; for alignment of about 10,000 sequences), etc.  See \url{http://mafft.cbrc.jp/alignment/software/}.  The manual is also available here: \url{http://mafft.cbrc.jp/alignment/software/manual/manual.html} 
 }
 \usage{
 Mafft(file.name, file.path="", type="DNA", aln.filetype="FASTA", args=NULL, 
-      out.name=NULL, print.curl=FALSE, job.name=NULL, email=TRUE,
-      shared.username=NULL, suppress.Warnings=FALSE)
+      out.name=NULL, print.curl=FALSE, job.name=NULL, shared.username=NULL, 
+      suppress.Warnings=FALSE)
 }
 \arguments{
 	\item{file.name}{name of file to be evaluated on the Discovery Environment (DE), see details for supported input formats.}
@@ -20,7 +21,6 @@ Mafft(file.name, file.path="", type="DNA", aln.filetype="FASTA", args=NULL,
 	\item{print.curl}{Prints the curl statement that can be used in the terminal, if curl is installed on your computer}
 	\item{shared.username}{With iPlant you have the ability to share folders with other users.  If someone has shared a folder with you and you want to run a job with them, enter their username for this input.}
 	\item{suppress.Warnings}{This will turn off the warnings, will speed up run time.  Use with caution, if the inputs are incorrect they will not be caught.}
-	\item{email}{By default an email will be sent to the user when the job finishes.}
 }
 \details{
 	The supported input file format is the fasta format \url{http://en.wikipedia.org/wiki/FASTA_format}.

@@ -16,7 +16,7 @@
 SubmitJob(application, file.path="", file.list=NULL, input.list, 
           args.list=NULL, job.name, nprocs=1, private.APP=FALSE, 
           suppress.Warnings=FALSE,  shared.username=NULL,
-          print.curl=FALSE, email=TRUE)
+          print.curl=FALSE)
 Wait(job.id, minWaitsec, maxWaitsec, print=FALSE)
 CheckJobStatus(job.id, history = FALSE, print.curl = FALSE)
 KillJob(job.id, print.curl=FALSE)
@@ -45,7 +45,6 @@ DeleteJob(job.id, print.curl=FALSE, ALL=FALSE)
 	\item{verbose}{For the \code{RetrieveJob} function this option will print the names of the files as they are downloaded.}
 	\item{shared.username}{With iPlant you have the ability to share folders with other users.  If someone has shared a folder with you and you want to run a job with them, enter their username for this input.}
 	\item{suppress.Warnings}{This will turn off the warnings, will speed up run time.  Use with caution, if the inputs are incorrect they will not be caught.  If the application you are running is a private application have suppress.Warnings=TRUE.}
-	\item{email}{This option is only on the \code{SubmitJob} function.  By default an email will be sent to the user when the job finishes.}
 	\item{ALL}{This option is only on the \code{DeleteJob} function.  If ALL=TRUE then all jobs in the job history will be deleted.}
 	\item{history}{This option is only on the \code{CheckJobStatus} function.  If TRUE, then will show entire history of job.}
 }

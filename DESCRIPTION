@@ -1,6 +1,6 @@
 Package: rPlant
-Version: 2.12
-Date: 2015-09-18
+Version: 2.16
+Date: 2016-04-01
 Title: Interface to the Agave API
 Author: Barb Banbury <darwinthesun@gmail.com> and Kurt Michels <kamichels@math.arizona.edu>, Jeremy M. Beaulieu <jeremy.beaulieu@yale.edu>, Brian O'Meara <bomeara@utk.edu>
 Maintainer: Kurt Michels <kamichels@math.arizona.edu>
@@ -12,6 +12,6 @@ Description: Provides an interface to the the many computational resources iPlan
 URL: http://www.iplantcollaborative.org/discover/discovery-environment
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2015-10-20 17:51:22 UTC; michels
+Packaged: 2016-04-01 22:15:11 UTC; michels
 Repository: CRAN
-Date/Publication: 2015-10-21 10:02:03
+Date/Publication: 2016-04-03 16:38:09
